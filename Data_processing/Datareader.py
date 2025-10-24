@@ -11,7 +11,6 @@ time.sleep(2)  # Allow time for the serial connection to establish
 with open(f'ExperimentA_{x}.csv', 'a', newline='') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(["Time" , "Temperature"])
-
         while True:
             #time.sleep(0.3) #Data delay for flow controll 
             if ser.in_waiting > 0:
@@ -19,4 +18,4 @@ with open(f'ExperimentA_{x}.csv', 'a', newline='') as csvfile:
                 # Assuming your serial data is comma-separated (e.g., "value1,value2")
                 data = line.split(',')
                 csv_writer.writerow([time.strftime("%M:%S")] + data)
-                csvfile.flush() # Ensure data is written to disk immediately
+                csvfile.flush() # Ensure data is written to disk
