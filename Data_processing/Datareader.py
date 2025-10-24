@@ -13,7 +13,7 @@ with open(f'ExperimentA_{x}.csv', 'a', newline='') as csvfile:
         csv_writer.writerow(["Time" , "Temperature"])
 
         while True:
-            #time.sleep(0.3)
+            #time.sleep(0.3) #Data delay for flow controll 
             if ser.in_waiting > 0:
                 line = ser.readline().decode('utf-8').strip()
                 # Assuming your serial data is comma-separated (e.g., "value1,value2")
