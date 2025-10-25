@@ -28,10 +28,12 @@ def on_press(key):
 #Init keyboard listner
 key_watcher = keyboard.Listener(on_press=on_press)
 
-#Seial port checker
-def serial_port_check():
-    print("Placeholder code")
-    
+def list_data_files():
+    folder = Path("Data")
+    print("All data files are shown below:")
+    for file in folder.glob("*.csv"):
+        print(file.name)
+
 #Manages filecreation and data reading/writing to file
 def data_record(filename):
     global end
@@ -62,23 +64,24 @@ def data_record(filename):
 #Menu for some graphic interface for user
 def print_Menu():
     while True:
-        print("----Main Menu-----")
-        print("|1. Record data  |")
-        print("|2. Plot data    |")
-        print("|3.              |")
-        print("|4.              |")
-        print("|5.              |")
-        print("|6.              |")
-        print("|7.              |")
-        print("|8. Settings     |")
-        print("|9. Go to github |")
-        print("|0. Exit program |")
-        print("-----------------")
+        print("-----Main Menu-----")
+        print("|1. Record data    |")
+        print("|2. Plot data      |")
+        print("|3.                |")
+        print("|4.                |")
+        print("|5.                |")
+        print("|6.                |")
+        print("|7. List data files|")
+        print("|8. Settings       |")
+        print("|9. Go to github   |")
+        print("|0. Exit program   |")
+        print("-------------------")
         menu_choice = int(input("What do you want to do?\n"))
         match menu_choice:
             case 1:
                 data_record(input("What will your file be called?\n"))
-            
+            case 7:
+                list_data_files()
             case 8:
                 settings_menu()
             case 9:
@@ -113,7 +116,7 @@ def settings_menu():
                         print("-" * 20)
 
                 port_num = int(input("Which device is your device?\n"))
-                serial_port = ports[port_num].device
+                serial_port = ports[port_num-1].device
                 print(f"New device is {serial_port}")
 
             case 2:#Changing baudrate
