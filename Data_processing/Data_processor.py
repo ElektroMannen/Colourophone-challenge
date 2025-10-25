@@ -36,30 +36,36 @@ def list_data_files():
 
 #Manages filecreation and data reading/writing to file
 def data_record(filename):
-    global end
+    global end, serial_port,serial_baudrate
     #Checking if file exists and creates file if not
     folder = Path("Data")
     folder.mkdir(exist_ok=True)
     filepath = Path(f"{folder}/{filename}.csv")
     if not filepath.exists():
-        print(f"creating {filename}.csv")
+        print(f"Creating {filepath}")
         with open(filepath, mode="w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["Time", "Value"])
-        print(f"File created at {filepath}")
+            writer.writerow(["Time", "Temperature"])  # Write header once
     else:
-        print("File allready exists")
-
-
+        print(f"Appending data to existing file: {filepath}")
 
     #Data recording can begin
+    ser = serial.Serial(serial_port, serial_baudrate)
     print("\nTo start and stop data recording use spacebar \nUse Escape key to end data recording")
-
-    
     key_watcher.start()
-    if(end):
-        key_watcher.stop()
-
+     # Open file in append mode
+    with open(filepath, "a", newline="") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        while True:
+            if ((ser.in_waiting > 0) and (reading_toggle)):  # Only log when active
+                line = ser.readline().decode('utf-8', errors='ignore').strip()
+                csv_writer.writerow([time.strftime("%H:%M:%S"), line])
+                csvfile.flush()
+            if (end):
+                print("Stopping recording...")
+                ser.close()
+                key_watcher.stop()
+                break
 
 #Menu for some graphic interface for user
 def print_Menu():
