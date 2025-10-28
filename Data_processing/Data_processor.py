@@ -5,6 +5,7 @@ import webbrowser
 from pynput import keyboard
 from pathlib import Path
 import serial.tools.list_ports
+import matplotlib.pyplot as plt
 
 
 serial_port = ""
@@ -45,7 +46,7 @@ def data_record(filename):
         print(f"Creating {filepath}")
         with open(filepath, mode="w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["Time", "Temperature"])  # Write header once
+            writer.writerow(["Messurement number", "Distance","Voltage"])  # Write header once
     else:
         print(f"Appending data to existing file: {filepath}")
 
@@ -67,6 +68,21 @@ def data_record(filename):
                 key_watcher.stop()
                 break
 
+#Plots a bar graph
+def plot_data():
+    w = 0.4
+    plt.title("Distance sensors")
+    plt.xlabel("Mesurement number")
+    plt.ylabel("Cm")
+    fasit = [1,5,10,20,50,75,100]
+    x= [0,1,2,3,4,5,6]
+    y = [2,4,12,18,25,80,90]
+    # Shift bars left and right by half the bar width
+    plt.bar([i - w/2 for i in x], y, w, label='Sensor')
+    plt.bar([i + w/2 for i in x], fasit, w, label='Fasit')
+    plt.grid()
+    plt.show() 
+
 #Menu for some graphic interface for user
 def print_Menu():
     while True:
@@ -86,6 +102,8 @@ def print_Menu():
         match menu_choice:
             case 1:
                 data_record(input("What will your file be called?\n"))
+            case 2:
+                plot_data()
             case 7:
                 list_data_files()
             case 8:

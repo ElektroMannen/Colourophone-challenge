@@ -1,1 +1,8 @@
 Data/
+Sensor/lib/README
+Sensor/include/README
+.gitignore
+.gitignore
+Sensor/test/README
+Sensor/.vscode/extensions.json
+Sensor/platformio.ini
