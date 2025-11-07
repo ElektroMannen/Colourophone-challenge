@@ -31,9 +31,12 @@ key_watcher = keyboard.Listener(on_press=on_press)
 
 def list_data_files():
     folder = Path("Data")
-    print("All data files are shown below:")
-    for file in folder.glob("*.csv"):
-        print(file.name)
+    if (not list(folder.glob("*.csv"))):
+            print("No files found")
+    else:
+        print("All data files are shown below:")
+        for file in folder.glob("*.csv"):
+            print(file.name)
 
 #Manages filecreation and data reading/writing to file
 def data_record(filename):
@@ -57,11 +60,13 @@ def data_record(filename):
      # Open file in append mode
     with open(filepath, "a", newline="") as csvfile:
         csv_writer = csv.writer(csvfile)
+        x = 0
         while True:
             if ((ser.in_waiting > 0) and (reading_toggle)):  # Only log when active
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
-                csv_writer.writerow([time.strftime("%H:%M:%S"), line])
+                csv_writer.writerow([x, line])
                 csvfile.flush()
+                x = x +1
             if (end):
                 print("Stopping recording...")
                 ser.close()
@@ -88,7 +93,7 @@ def print_Menu():
     while True:
         print("-----Main Menu-----")
         print("|1. Record data    |")
-        print("|2. Plot data      |")
+        print("|2. Plot data(test)|")
         print("|3.                |")
         print("|4.                |")
         print("|5.                |")
