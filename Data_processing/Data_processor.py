@@ -29,6 +29,7 @@ def on_press(key):
 #Init keyboard listner
 key_watcher = keyboard.Listener(on_press=on_press)
 
+#Checks if there are files in data folder adn prints existiong csv files
 def list_data_files():
     folder = Path("Data")
     if (not list(folder.glob("*.csv"))):
